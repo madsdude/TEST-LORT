@@ -1,5 +1,5 @@
 import socket
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
@@ -21,8 +21,28 @@ def index():
 
 @app.route("/diagnostic")
 def diagnostic():
-    online = check_connectivity()
-    return jsonify({"online": online})
+    host = request.args.get("host", "8.8.8.8")
+    port = int(request.args.get("port", 53))
+    online = check_connectivity(host=host, port=port)
+    return jsonify({"host": host, "port": port, "online": online})
+
+
+def http_check(url: str, timeout: int = 3) -> bool:
+    """Try to perform a simple HEAD request to the given URL."""
+    import requests
+
+    try:
+        response = requests.head(url, timeout=timeout)
+        return response.ok
+    except Exception:
+        return False
+
+
+@app.route("/http_check")
+def http_check_route():
+    url = request.args.get("url", "https://www.google.com")
+    reachable = http_check(url)
+    return jsonify({"url": url, "reachable": reachable})
 
 
 if __name__ == "__main__":
