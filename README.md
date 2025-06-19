@@ -17,19 +17,3 @@ Run the container:
 docker run -p 8000:8000 test-lort
 ```
 
-Once running, open `http://localhost:8000` in your browser to access a small
-web interface for running diagnostics. The API endpoints are still available
-directly as described below.
-
-### Endpoints
-
-- `GET /diagnostic` - Check socket connectivity. Optional query parameters
-  `host` and `port` allow testing a specific endpoint.
-- `GET /http_check` - Perform a simple HTTP HEAD request using the `url`
-  query parameter.
-
-Example diagnostic request:
-
-```bash
-curl "http://localhost:8000/diagnostic?host=1.1.1.1&port=53"
-```
