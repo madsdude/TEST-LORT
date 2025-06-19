@@ -17,5 +17,3 @@ Run the container:
 docker run -p 8000:8000 test-lort
 ```
 
-The web service will be available on `http://localhost:8000`. Visit
-`/diagnostic` to run a basic connectivity check.

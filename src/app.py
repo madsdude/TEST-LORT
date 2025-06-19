@@ -1,5 +1,5 @@
 import socket
-from flask import Flask, jsonify
+
 
 app = Flask(__name__)
 
@@ -16,13 +16,12 @@ def check_connectivity(host="8.8.8.8", port=53, timeout=3):
 
 @app.route("/")
 def index():
+
     return jsonify({"status": "ok"})
 
 
 @app.route("/diagnostic")
 def diagnostic():
-    online = check_connectivity()
-    return jsonify({"online": online})
 
 
 if __name__ == "__main__":
