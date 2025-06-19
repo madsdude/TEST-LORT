@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Network Diagnostic</title>
+</head>
+<body>
+    <h1>Network Diagnostic</h1>
+    <h2>Socket Check</h2>
+    <form id="diagnostic-form">
+        <label>Host: <input id="host" value="8.8.8.8"></label>
+        <label>Port: <input id="port" type="number" value="53"></label>
+        <button type="submit">Check</button>
+    </form>
+    <pre id="diagnostic-output"></pre>
+    <h2>HTTP Check</h2>
+    <form id="http-form">
+        <label>URL: <input id="url" value="https://www.google.com"></label>
+        <button type="submit">Check</button>
+    </form>
+    <pre id="http-output"></pre>
+<script>
+document.getElementById('diagnostic-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const host = document.getElementById('host').value;
+    const port = document.getElementById('port').value;
+    const resp = await fetch(`/diagnostic?host=${encodeURIComponent(host)}&port=${port}`);
+    const data = await resp.json();
+    document.getElementById('diagnostic-output').textContent = JSON.stringify(data, null, 2);
+});
+
+document.getElementById('http-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const url = document.getElementById('url').value;
+    const resp = await fetch(`/http_check?url=${encodeURIComponent(url)}`);
+    const data = await resp.json();
+    document.getElementById('http-output').textContent = JSON.stringify(data, null, 2);
+});
+</script>
+</body>
+</html>
